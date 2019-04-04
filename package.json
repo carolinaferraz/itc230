@@ -1,0 +1,31 @@
+{
+  "name": "itc230",
+  "version": "1.0.0",
+  "description": "simple json package",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^5.16.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carolinaferraz/itc230.git"
+  },
+  "keywords": [
+    "json",
+    "js",
+    "is",
+    "awesome",
+    "test"
+  ],
+  "author": "carolina ferraz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carolinaferraz/itc230/issues"
+  },
+  "homepage": "https://github.com/carolinaferraz/itc230#readme"
+}
