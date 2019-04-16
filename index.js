@@ -1,8 +1,14 @@
-const http = require("http"); 
-const fs = require("fs");
+var http = require("http"), fs = require('fs'); 
+const qs = require("querystring");
+var color = require("/Users/cferraz/Documents/SCCC/Q4/ITC230/lib/colors.js");
+
 
 http.createServer((req,res) => {
-  const path = req.url.toLowerCase();
+  let url = req.url.split("?");  // separate route from query string
+  let query = qs.parse(url[1]); // convert query string to object
+  let path = url[0].toLowerCase();
+
+ 
   switch(path) {
     case '/':
     fs.readFile("public/home.html", (err, data) => {
@@ -16,11 +22,23 @@ http.createServer((req,res) => {
       if (err) return console.error(err);
       res.end(data.toString());
       });
-      break; 
+      break;
+      
+      case '/get':
+      let found = color.get(query.name); // get color object
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      let output = (found) ? JSON.stringify(found) : "Not found";
+      res.end('here is your color:' + "\n" + output);
+      break;
+
+      case '/delete':
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.end('delete');
+      break;
     
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('404 -- Not found :(');
+      res.end('404: Page not found :(');
       break;
     }
 }).listen(process.env.PORT || 3000);
