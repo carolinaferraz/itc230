@@ -1,6 +1,6 @@
 var http = require("http"), fs = require('fs'); 
 const qs = require("querystring");
-var color = require("/Users/cferraz/Documents/SCCC/Q4/ITC230/lib/colors.js");
+var color = require("./lib/colors.js");
 
 
 http.createServer((req,res) => {
@@ -23,7 +23,11 @@ http.createServer((req,res) => {
       res.end(data.toString());
       });
       break;
-      
+
+      case '/getall':
+      res.end(JSON.stringify(color.getAll()));
+      break;
+
       case '/get':
       let found = color.get(query.name); // get color object
       res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -32,9 +36,13 @@ http.createServer((req,res) => {
       break;
 
       case '/delete':
+      let bye = color.delete(query.name);
+      
       res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('delete');
+      res.end(JSON.stringify(bye));
       break;
+
+      
     
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});
