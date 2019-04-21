@@ -1,52 +1,61 @@
-var http = require("http"), fs = require('fs'); 
+'use strict'
+
+const express = require('express'); 
+let color = require("./lib/colors.js");
+
+const app = express();
+const bodyParser = require("body-parser")
+const PORT = 3000;
 const qs = require("querystring");
-var color = require("./lib/colors.js");
+
+app.use(express.static('public')); // set location for static files
+app.use(bodyParser.urlencoded({extended: true})); // parse form submissions
 
 
-http.createServer((req,res) => {
-  let url = req.url.split("?");  // separate route from query string
-  let query = qs.parse(url[1]); // convert query string to object
-  let path = url[0].toLowerCase();
 
- 
-  switch(path) {
-    case '/':
-    fs.readFile("public/home.html", (err, data) => {
-      if (err) return console.error(err);
-      res.end(data.toString());
-   });
-      break;
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + "/public/home.html");
+});
 
-    case '/about':
-    fs.readFile("public/about.html", (err, data) => {
-      if (err) return console.error(err);
-      res.end(data.toString());
-      });
-      break;
+//get all
+app.get('/getall', (req, res) => {
+  res.end(JSON.stringify(color.getAll()))
+});
 
-      case '/getall':
-      res.end(JSON.stringify(color.getAll()));
-      break;
+//get
+app.get('/get', (req, res) => {
+let url = req.url.split("?");  // separate route from query string
+let query = qs.parse(url[1]); // convert query string to object
+let path = url[0].toLowerCase();
 
-      case '/get':
-      let found = color.get(query.name); // get color object
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      let output = (found) ? JSON.stringify(found) : "Not found";
-      res.end('here is your color:' + "\n" + output);
-      break;
+let found = color.get(query.name); // get color object
+res.writeHead(200, {'Content-Type': 'text/plain'});
+let output = (found) ? JSON.stringify(found) : "Not found";
+res.end('here is your color:' + "\n" + output);
+});
 
-      case '/delete':
-      let bye = color.delete(query.name);
-      
-      res.writeHead(200, {'Content-Type': 'text/plain'});
+//delete - returns boolean for now, getall presents updated array
+app.get(('/delete'), (req, res) => {
+  let delurl = req.url.split("?");
+  let delquery = qs.parse(delurl[1]);
+  let bye = color.delete(delquery.name);
+  res.writeHead(200, {'Content-Type': 'text/plain'});
       res.end(JSON.stringify(bye));
-      break;
+});
 
-      
-    
-    default:
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('404: Page not found :(');
-      break;
-    }
-}).listen(process.env.PORT || 3000);
+// send plain text response
+app.get('/about', (req, res) => {
+  res.type('text/plain');
+  res.send('about page');
+ });
+
+// define 404 handler
+app.use( (req,res) => {
+  res.type('text/plain'); 
+  res.status(404);
+  res.send('404 - Not found');
+ });
+
+app.listen(PORT, () => {
+  console.log("your server is running on port "  + PORT + "! :)");
+  });
