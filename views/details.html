@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>details.</title>
+    <script src="./lib/colors.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/mini.css">
+
+</head>
+<body>
+  <h2>Details for {{name}}</h2>
+  {{#if result}}
+    <li>name: {{ result.name }}
+    <li>hex: {{ result.hex }}
+    <li>rgb: {{ result.rgb }}
+  {{else}}
+    not found
+  {{/if}}
+</body>
+</html> 

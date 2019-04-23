@@ -1,3 +1,5 @@
+// CONTROLLER
+
 'use strict'
 
 const express = require('express'); 
@@ -11,11 +13,15 @@ const qs = require("querystring");
 app.use(express.static('public')); // set location for static files
 app.use(bodyParser.urlencoded({extended: true})); // parse form submissions
 
+let handlebars =  require("express-handlebars");
+app.engine(".html", handlebars({extname: '.html'}));
+app.set("view engine", ".html");
 
+//send content of 'home' view
+app.get('/', (req,res) => {
+  res.render('home');
+ });
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + "/public/home.html");
-});
 
 //get all
 app.get('/getall', (req, res) => {
@@ -26,15 +32,22 @@ app.get('/getall', (req, res) => {
 app.get('/get', (req, res) => {
 let url = req.url.split("?");  // separate route from query string
 let query = qs.parse(url[1]); // convert query string to object
-let path = url[0].toLowerCase();
 
 let found = color.get(query.name); // get color object
 res.writeHead(200, {'Content-Type': 'text/plain'});
 let output = (found) ? JSON.stringify(found) : "Not found";
-res.end('here is your color:' + "\n" + output);
+res.end('your color:' + "\n" + output);
 });
 
-//delete - returns boolean for now, getall presents updated array
+//detail route
+app.post('/detail', (req, res) => {
+  console.log(req.body);
+
+  let result = color.get(req.body.colorname);
+  res.render('details', {name: req.body.colorname, result: result });
+ });
+
+//delete - returns boolean value, getall presents updated array
 app.get(('/delete'), (req, res) => {
   let delurl = req.url.split("?");
   let delquery = qs.parse(delurl[1]);

@@ -1,0 +1,20 @@
+body {
+	background-color: mintcream;
+	font-family: Arial, sans-serif;
+	margin: 25px; 
+	color: #888;
+  letter-spacing: 1px;
+}
+
+h1 {
+  background: #fff5f5;
+  font-family: 'Trebuchet MS', sans-serif;
+  letter-spacing: 3px;
+	font-size: 2em;
+  text-align: center;
+  color: #888;
+}
+
+h2 {
+  background: #efefef;
+} 
