@@ -7,15 +7,16 @@
 
 </head>
 <body>
-  <h2>Details for {{name}}</h2>
-  {{#if result}}
-    <li>name: {{ result.name }}
-    <li>hex: {{ result.hex }}
-    <li>rgb: {{ result.rgb }}
-    <p><a href="/delete?name={{ name }}">delete color?</a></p>
-  {{else}}
-    color not found
-  {{/if}}
+  <h2 style="background-color:#e7ffce">{{name}} was deleted.</h2>
+  
+    <li>name: {{ color }}
+    <li>hex: {{ color.hex }}
+    <li>rgb: {{ color.rgb }}
+    
+  <p>{{#each colors}}
+ <li>{{color.name}}</li>
+{{/each}}</p>
+
   <p><a href="/">home</a></p>
 </body>
 </html> 

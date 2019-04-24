@@ -39,27 +39,27 @@ let output = (found) ? JSON.stringify(found) : "Not found";
 res.end('your color:' + "\n" + output);
 });
 
-//detail route
+//detail 
 app.post('/detail', (req, res) => {
-  console.log(req.body);
+  
 
   let result = color.get(req.body.colorname);
   res.render('details', {name: req.body.colorname, result: result });
  });
+
 
 //delete - returns boolean value, getall presents updated array
 app.get(('/delete'), (req, res) => {
   let delurl = req.url.split("?");
   let delquery = qs.parse(delurl[1]);
   let bye = color.delete(delquery.name);
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end(JSON.stringify(bye));
+  res.render('delete', {name: delquery.name, result: bye});
+
 });
 
-// send plain text response
+// about
 app.get('/about', (req, res) => {
-  res.type('text/plain');
-  res.send('about page');
+  res.render('about');
  });
 
 // define 404 handler
