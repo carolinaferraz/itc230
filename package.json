@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "simple json package",
   "main": "index.js",
-  "dependencies": {
-    "eslint": "^5.16.0"
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "express": "^4.16.4",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.18.11"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

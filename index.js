@@ -52,8 +52,8 @@ app.post('/detail', (req, res) => {
 app.get(('/delete'), (req, res) => {
   let delurl = req.url.split("?");
   let delquery = qs.parse(delurl[1]);
-  let bye = color.delete(delquery.name);
-  res.render('delete', {name: delquery.name, result: bye});
+  let result = color.delete(delquery.name);
+  res.render('delete', {name: delquery.name, result: result});
 
 });
 
