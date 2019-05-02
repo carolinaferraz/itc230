@@ -22,6 +22,11 @@ app.get('/', (req,res) => {
   res.render('home');
  });
 
+ // about
+app.get('/about', (req, res) => {
+  res.render('about');
+ });
+
 
 //get all
 app.get('/getall', (req, res) => {
@@ -41,26 +46,28 @@ res.end('your color:' + "\n" + output);
 
 //detail 
 app.post('/detail', (req, res) => {
-  
-
   let result = color.get(req.body.colorname);
-  res.render('details', {name: req.body.colorname, result: result });
- });
+  res.render('details', {name: req.body.colorname, result: result});
+});
 
 
-//delete - returns boolean value, getall presents updated array
-app.get(('/delete'), (req, res) => {
+//delete 
+app.get('/delete', (req, res) => {
   let delurl = req.url.split("?");
-  let delquery = qs.parse(delurl[1]);
-  let result = color.delete(delquery.name);
-  res.render('delete', {name: delquery.name, result: result});
+ let delquery = qs.parse(delurl[1]);
+ let result = color.delete(delquery.name);
+ res.render('delete', {name: delquery.name, result: result});
 
 });
 
-// about
-app.get('/about', (req, res) => {
-  res.render('about');
+
+ // add
+ app.post('/add', (req, res) => {
+  let result = color.add(req.body);
+  res.send(result);
+
  });
+
 
 // define 404 handler
 app.use( (req,res) => {
@@ -72,4 +79,4 @@ app.use( (req,res) => {
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log("server running on port "  + PORT + "! :)");
-  });
+});

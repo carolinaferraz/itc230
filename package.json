@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "simple json package",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "mongoose": "^5.5.4"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
