@@ -17,66 +17,69 @@ let handlebars =  require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html'}));
 app.set("view engine", ".html");
 
-//send content of 'home' view
+//start server
+app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log("server running on port "  + PORT + "! :)");
+});
+
+//home
 app.get('/', (req,res) => {
   res.render('home');
  });
 
- // about
-app.get('/about', (req, res) => {
-  res.render('about');
- });
-
-
-//get all
+ //get all
 app.get('/getall', (req, res) => {
   res.end(JSON.stringify(color.getAll()))
 });
 
 //get
 app.get('/get', (req, res) => {
-let url = req.url.split("?");  // separate route from query string
-let query = qs.parse(url[1]); // convert query string to object
+  let found = color.get(req.body.name); // get color object
+  let output = (found) ? JSON.stringify(found) : "Not found";
+  res.end(output);
+  });
 
-let found = color.get(query.name); // get color object
-res.writeHead(200, {'Content-Type': 'text/plain'});
-let output = (found) ? JSON.stringify(found) : "Not found";
-res.end('your color:' + "\n" + output);
-});
-
-//detail 
-app.post('/detail', (req, res) => {
+ //details 
+ app.post('/detail', (req, res) => {
   let result = color.get(req.body.colorname);
   res.render('details', {name: req.body.colorname, result: result});
 });
 
+ // add
+ app.post('/colors', (req, res) => { 
+  let newColor = {
+    name: req.body.name, 
+    hex: req.body.hex, 
+    rgb: req.body.rgb};
+  try {
+    let result = color.add(newColor);
+    res.status(201).send(result);
+  } 
+  catch (error){
+    res.status(400).send({error: 'color already exists!'});
+  }
+  
+  
+ });
 
 //delete 
 app.get('/delete', (req, res) => {
-  let delurl = req.url.split("?");
+ let delurl = req.url.split("?");
  let delquery = qs.parse(delurl[1]);
  let result = color.delete(delquery.name);
  res.render('delete', {name: delquery.name, result: result});
 
 });
-
-
- // add
- app.post('/add', (req, res) => {
-  let result = color.add(req.body);
-  res.send(result);
-
- });
-
-
+  
 // define 404 handler
 app.use( (req,res) => {
   res.type('text/plain'); 
-  res.status(404);
-  res.send('404 - Not found');
+  res.sendStatus(404);
  });
+ 
 
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log("server running on port "  + PORT + "! :)");
-});
+ // about
+app.get('/about', (req, res) => {
+  res.render('about');
+ });
