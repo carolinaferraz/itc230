@@ -10,7 +10,7 @@ describe("color - get module", () => {
     });
     
     it("fails w/ invalid color", () => {
-      const result = color.get("ops! invalid.");
+      const result = color.get("purple");
       expect(result).to.be.undefined;
     });
 });
