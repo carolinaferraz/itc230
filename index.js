@@ -47,7 +47,7 @@ app.get('/get', (req, res) => {
 });
 
  // add
- app.post('/colors', (req, res) => { 
+ app.post('/add', (req, res) => { 
   let newColor = {
     name: req.body.name, 
     hex: req.body.hex, 
@@ -57,7 +57,9 @@ app.get('/get', (req, res) => {
     res.status(201).send(result);
   } 
   catch (error){
-    res.status(400).send({error: 'color already exists!'});
+    res.status(400).send({
+      error: 'color already exists!'
+    });
   }
   
   

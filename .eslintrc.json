@@ -1,6 +1,7 @@
-{
+ {
+
     "extends": "eslint:recommended", 
-    
+
     "env": {
         "browser": true,
         "commonjs": true,
@@ -11,7 +12,8 @@
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2018,
+        "sourceType": "module"
     },
     "rules": {
         "prefer-arrow-callback": "warn",
