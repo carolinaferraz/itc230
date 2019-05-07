@@ -12,6 +12,6 @@ describe("color - add module", () => {
     // broken :(
     it("fails if color already exists", () => {
       const result = color.add("black");
-      expect(result).to.throw(Error);
+      expect(result).to.throw(error);
     });
 });
