@@ -1,12 +1,12 @@
 // CONTROLLER
 
 'use strict'
-
 const express = require('express'); 
-let color = require("./lib/colors.js");
+let color = require('./models/color');
+
 
 const app = express();
-const bodyParser = require("body-parser")
+const bodyParser = require('body-parser');
 const PORT = 3000;
 const qs = require("querystring");
 
