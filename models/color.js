@@ -1,3 +1,5 @@
+//DATA MODEL
+
 /* eslint-disable no-console */
 const mongoose = require('mongoose');
 let cred = require('../lib/credentials');
@@ -15,6 +17,6 @@ const colorSchema = mongoose.Schema({
  name: { type: String, required: true },
  hex: String,
  rgb: String
-}); 
+});
 
 module.exports = mongoose.model('Color', colorSchema);

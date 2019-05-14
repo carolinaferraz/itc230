@@ -2,17 +2,18 @@
 <html lang="en-us">
   <head>
     <title>details.</title>
-    <script src="./lib/colors.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="../../css/mini.css">
+    <script type="text/javascript" src="../models/colormethods"></script>
 
 </head>
 <body>
-  <h2>Details for {{name}}</h2>
-  {{#if result}}
-    <li>name: {{ result.name }}
-    <li>hex: {{ result.hex }}
-    <li>rgb: {{ result.rgb }}
-    <p><a href="/delete?name={{ name }}">delete color?</a></p>
+  <h2>Details for {{ colorname }}</h2>
+  {{#if item}}
+    <li>name: {{ item.name }}
+    <li>hex: {{ item.hex }}
+    <li>rgb: {{ item.rgb }}
+    <p><a href="/delete?name={{ item.name }}">delete color?</a></p>
   {{else}}
     color not found
   {{/if}}
