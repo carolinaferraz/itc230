@@ -30,13 +30,18 @@ exports.add = (newcolor) => {
 
 })};
 
-//delete -- broken
-// exports.delete = (name) => { 
-//     colordb.findOneAndDelete({'name': name}, (err, result).countDocuments(({}), (err, count) => {
-//         if (err) {
-//             return err;
-//         }   
-//         return count
-//     })
+//delete
+exports.delete = (name) => {
+    return colordb.findOneAndDelete({'name': name}, (err, deleted) => {
+        if (err) {
+          return err;
+        } return deleted
+    })
+};
 
-// });
+//count
+exports.count = () => {
+  return colordb.countDocuments((err, count) => {
+    return count
+  })  
+}

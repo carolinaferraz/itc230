@@ -49,14 +49,17 @@ app.get('/', (req,res) => {
 
 //get details
 app.post('/detail', (req, res) => {
-    colormethods.get(req.body.colorname).then((item) => {
-      res.render('details', {colorname:req.body.colorname, item})  
+  colormethods.get(req.body.colorname).then((item) => {
+    res.render('details', {colorname:req.body.colorname, item})  
     })
 });
 
 
-//delete -- broken :(
-// app.get('/delete', (req, res) => {
-//   let result = colormethods.delete(req.query.name);
-//   res.render('delete', {name: req.query.name, result: result});
-// });
+//delete & count
+app.get('/delete', (req, res) => {
+  colormethods.delete(req.query.name).then(() => {
+    colormethods.count().then((count)=> {
+      res.render('delete', {name: req.query.name, count});
+    })
+  });
+});
