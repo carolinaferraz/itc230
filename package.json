@@ -4,20 +4,22 @@
   "description": "simple json package",
   "main": "index.js",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express-handlebars": "^3.1.0",
     "mongodb": "^3.2.4",
-    "mongoose": "^5.5.6"
+    "mongoose": "^5.5.9"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "express": "^4.16.4",
+    "express": "^4.17.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.0"
   },
   "scripts": {
     "lint": "eslint **/*.js",
     "test": "mocha test/**",
-    "start": "node server.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",

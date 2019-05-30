@@ -7,12 +7,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const PORT = 3000;
+const routes = require('./routes.js')(app); // pass ‘app’ instance to the routes module
 
+app.use('/api', require('cors')());
 app.use(express.static('public')); // set location for static files
 app.use(bodyParser.urlencoded({extended: true})); // parse form submissions
 
 const colormethods = require('./models/colormethods');
-let handlebars =  require("express-handlebars");
+let handlebars =  require('express-handlebars');
 app.engine(".html", handlebars({extname: '.html'}));
 app.set("view engine", ".html");
 
@@ -33,6 +35,13 @@ app.get('/', (req,res) => {
     return next(err);
   });
 });
+
+routes.fetch("/api/v1/colors").then((response) => {
+  return response.json();
+ }).then((results) => {
+  console.log(results) 
+ });
+
 
  // add
  app.post('/add', (req, res) => { 

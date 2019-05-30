@@ -6,7 +6,7 @@ let cred = require('../lib/credentials');
 
 
 
-mongoose.connect(cred.connectionString, { dbName: 'itc230', useNewUrlParser: true }); 
+mongoose.connect(cred.connectionString, { dbName: 'hello-nodejs', useNewUrlParser: true }); 
 
 mongoose.connection.on('open', () => {
   console.log('Mongoose connected.');

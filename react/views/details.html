@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>details.</title>
+  
+    <script type="text/javascript" src="../app/controller"></script>
+
+</head>
+<body>
+  <h2>Details for {{ colorname }}</h2>
+  {{#if item}}
+    <li>name: {{ item.name }}
+    <li>hex: {{ item.hex }}
+    <li>rgb: {{ item.rgb }}
+    <p><a href="/delete?name={{ item.name }}">delete color?</a></p>
+  {{else}}
+    color not found
+  {{/if}}
+  <p><a href="/">home</a></p>
+</body>
+</html> 
