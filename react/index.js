@@ -1,18 +1,51 @@
 /* eslint-disable no-console */
-const Bear = require('./components/bears');
-const express = require('express');
-let bearmodel = require('../models/bear');
+// index.js
+
+
+const express = require('express');        
+const app = express();                 
+let bodyParser = require('body-parser');
+
+let Bear = require('./models/bear');
+
+// set template engine
+let handlebars =  require("express-handlebars");
+app.engine(".html", handlebars({extname: '.html', defaultLayout: false}));
+app.set("view engine", ".html");
+
+
+
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+const port = process.env.PORT || 3000;        // set port
 
 
 // routes for api
 // ===================
-const router = express.Router();  
+let router = express.Router();  
 
 // middleware to use for all requests
 router.use((req, res, next) => {
     console.log('Something is happening!');
     next(); 
 });
+
+//home 
+app.get('/', (req,res) => {
+    Bear.find({}, (err, bears) => {
+        if (err)
+            res.send(err);
+            res.render('home', {bears: JSON.stringify(bears)} );
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "error"
+        });
+    });
+   });
+
 
 // test route (accessed at GET http://localhost:3000/api)
 router.get('/', (req, res) => {
@@ -42,9 +75,7 @@ router.route('/bears')
 
 // get all the bears (accessed at GET http://localhost:3000/api/bears)
     .get((req, res) => {
-        console.log(req)
-        bearmodel.find((err, bears) => {
-            console.log(bears);
+        Bear.find((err, bears) => {
             if (err)
                 res.send(err);
 
@@ -58,7 +89,7 @@ router.route('/bears/:bear_name')
 
 // get 1 bear (accessed at GET http://localhost:3000/api/bears/:bear_name)
     .get((req, res) => {
-        bearmodel.findOne(req.body.bearname, (err, bear) => {
+        Bear.findOne({'name': req.params.bear_name},  (err, bear) => {
             if (err)
                 res.send(err);
             res.json(bear);
@@ -67,7 +98,7 @@ router.route('/bears/:bear_name')
 
 // update the bear with this name (accessed at PUT http://localhost:3000/api/bears/:bear_name)
 .put((req, res) => {
-    bearmodel.findOne(req.body.bear_name, (err, bear) => {
+    Bear.findOne({'name': req.params.bear_name},(err, bear) => {
         if (err)
             res.send(err);
         bear.name = req.body.name;  // update the bears info
@@ -83,9 +114,8 @@ router.route('/bears/:bear_name')
 
 // delete the bear with this name (accessed at DELETE http://localhost:3000/api/bears/:bear_name)
 .delete((req, res) => {
-    bearmodel.findOneAndRemove({
-        _name: req.body.bear_name
-    }, (err, bear) => {
+    Bear.findOneAndRemove({'name': req.params.bear_name}, (err, bear) => {
+        console.log(bear)
         if (err)
             res.send(err);
 
@@ -93,24 +123,9 @@ router.route('/bears/:bear_name')
     });
 });
 
+// register routes
+app.use('/api', router);
 
-
-// //old routes.js code
-// module.exports = (app) => {
-//     const bears = require('./components/bears');
-
-//     // get all
-//     app.get('/api/bears', bears.getAll);
-
-//     //get
-//     app.get('/api/bears/:name', bears.get);
-
-//     // add
-//     app.post('/api/bears/', bears.add);
-
-//     // delete
-//     app.delete('/api/bears/delete/:name', bears.delete);
-
-//     // count
-//     app.post('/api/bears/count', bears.howmany);
-// }
+// start the server
+app.listen(port);
+console.log('Server running on port ' + port);

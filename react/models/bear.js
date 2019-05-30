@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-//bear model
+//models/bear
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const cred = require('../src/credentials');
+const cred = require('./credentials');
 
 mongoose.connect(cred.connectionString, { dbName: 'hello-nodejs', useNewUrlParser: true, useFindAndModify: false }); 
 
