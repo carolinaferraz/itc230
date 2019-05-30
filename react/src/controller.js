@@ -1,9 +1,9 @@
-const colordb = require('./model');
+const beardb = require('../models/bear');
 
 
 // get all ✓
 exports.getAll = (req, res) => {
-    colordb.find()
+    beardb.find()
     .then(colors => {
         res.send(colors);
     }).catch(err => {
@@ -15,7 +15,7 @@ exports.getAll = (req, res) => {
 
 // get ✓
 exports.get = (req, res) => {
-    colordb.findOne({'name': req.body.name}, (err, result) => {
+    beardb.findOne({'name': req.body.name}, (err, result) => {
         if(err) {
             return err; 
         } return result
@@ -26,38 +26,38 @@ exports.get = (req, res) => {
 // add ✓
 exports.add = (req, res) => {
     //new color
-    let newcolor = {
+    let newbear = {
         name: req.body.name, 
         hex: req.body.hex, 
         rgb: req.body.rgb
     }; 
 
-    colordb.updateOne({'name': newcolor.name}, newcolor, {upsert: true}, (err, result) => {
+    beardb.updateOne({'name': newbear.name}, newbear, {upsert: true}, (err, result) => {
         if(err) {
             return err; 
         } return result
     }).then(() => {
     res.status(200).send({
-        message: "color added."
+        message: "bear added."
     })
     });
 }
 
 // delete ✓
 exports.delete = (req, res) => {
-    colordb.findOneAndDelete({'name': req.params.name}, (err, result) => {
+    beardb.findOneAndDelete({'name': req.params.name}, (err, result) => {
         if(err) {
             return err; 
         } return result
         }).then(result => {
             res.status(200).send({
-                message: "color deleted."
+                message: "bear deleted."
             })
     })}
 
 //count
 exports.howmany = (req, res) => {
-    colordb.countDocuments((err, count) => {
+    beardb.countDocuments((err, count) => {
         if(err) {
             return err; 
         } return count

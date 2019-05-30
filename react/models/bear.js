@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 //bear model
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-let cred = require('../src/credentials');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const cred = require('../src/credentials');
 
 mongoose.connect(cred.connectionString, { dbName: 'hello-nodejs', useNewUrlParser: true, useFindAndModify: false }); 
 
@@ -11,7 +12,7 @@ mongoose.connection.on('open', () => {
   });
 
 
-var BearSchema = new Schema({
+let BearSchema = new Schema({
     name: String,
     color: String,
     type: String,

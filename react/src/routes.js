@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 const Bear = require('./components/bears');
 const express = require('express');
-var bearmodel = require('./src/bearmodel');
+let bearmodel = require('../models/bear');
 
 
 // routes for api
@@ -8,13 +9,13 @@ var bearmodel = require('./src/bearmodel');
 const router = express.Router();  
 
 // middleware to use for all requests
-router.use(function(req, res, next) {
+router.use((req, res, next) => {
     console.log('Something is happening!');
     next(); 
 });
 
 // test route (accessed at GET http://localhost:3000/api)
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
     res.json({ message: 'hooray! welcome to the api route!' });   
 });
 
@@ -24,14 +25,14 @@ router.get('/', function(req, res) {
 router.route('/bears')
 
 // create a bear (accessed at POST http://localhost:3000/api/bears)
-.post(function(req, res) {
+.post((req, res) => {
     let bear = new Bear();  
     bear.name = req.body.name;  
     bear.color = req.body.color;
     bear.type = req.body.type;
 
 // save the bear and check for errors
-    bear.save(function(err) {
+    bear.save((err) => {
         if (err)
             res.send(err);
             res.json({ message: 'Bear created!' });
@@ -40,9 +41,9 @@ router.route('/bears')
     })
 
 // get all the bears (accessed at GET http://localhost:3000/api/bears)
-    .get(function(req, res) {
+    .get((req, res) => {
         console.log(req)
-        bearmodel.find(function(err, bears) {
+        bearmodel.find((err, bears) => {
             console.log(bears);
             if (err)
                 res.send(err);
@@ -56,8 +57,8 @@ router.route('/bears')
 router.route('/bears/:bear_name')
 
 // get 1 bear (accessed at GET http://localhost:3000/api/bears/:bear_name)
-    .get(function(req, res) {
-        bearmodel.findOne(req.body.bearname, function(err, bear) {
+    .get((req, res) => {
+        bearmodel.findOne(req.body.bearname, (err, bear) => {
             if (err)
                 res.send(err);
             res.json(bear);
@@ -65,14 +66,14 @@ router.route('/bears/:bear_name')
     })
 
 // update the bear with this name (accessed at PUT http://localhost:3000/api/bears/:bear_name)
-.put(function(req, res) {
-    bearmodel.findOne(req.body.bear_name, function(err, bear) {
+.put((req, res) => {
+    bearmodel.findOne(req.body.bear_name, (err, bear) => {
         if (err)
             res.send(err);
         bear.name = req.body.name;  // update the bears info
 
     // save the bear
-        bear.save(function(err) {
+        bear.save((err) => {
             if (err)
                 res.send(err);
             res.json({ message: 'Bear updated!' });
@@ -81,10 +82,10 @@ router.route('/bears/:bear_name')
 })
 
 // delete the bear with this name (accessed at DELETE http://localhost:3000/api/bears/:bear_name)
-.delete(function(req, res) {
+.delete((req, res) => {
     bearmodel.findOneAndRemove({
         _name: req.body.bear_name
-    }, function(err, bear) {
+    }, (err, bear) => {
         if (err)
             res.send(err);
 
