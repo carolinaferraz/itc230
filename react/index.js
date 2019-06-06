@@ -52,28 +52,11 @@ router.get('/', (req, res) => {
     res.json({ message: 'hooray! welcome to the api route!' });   
 });
 
-
-
 // routes that end in /bears
 router.route('/bears')
 
-// create a bear (accessed at POST http://localhost:3000/api/bears)
-.post((req, res) => {
-    let bear = new Bear();  
-    bear.name = req.body.name;  
-    bear.color = req.body.color;
-    bear.type = req.body.type;
 
-// save the bear and check for errors
-    bear.save((err) => {
-        if (err)
-            res.send(err);
-            res.json({ message: 'Bear created!' });
-        });
-
-    })
-
-// get all the bears (accessed at GET http://localhost:3000/api/bears)
+// get all the bears (accessed at GET http://localhost:3000/api/bears) ✓
     .get((req, res) => {
         Bear.find((err, bears) => {
             if (err)
@@ -84,42 +67,44 @@ router.route('/bears')
     });
 
 
-// routes that end in /bears/:bear_name
-router.route('/bears/:bear_name')
+// routes that end in /bears/:bear_id
+router.route('/bears/:bear_id')
 
-// get 1 bear (accessed at GET http://localhost:3000/api/bears/:bear_name)
+// get 1 bear (accessed at GET http://localhost:3000/api/bears/:bear_id) ✓
     .get((req, res) => {
-        Bear.findOne({'name': req.params.bear_name},  (err, bear) => {
+        Bear.findById(req.params.bear_id,  (err, bear) => {
             if (err)
                 res.send(err);
             res.json(bear);
         });
     })
 
-// update the bear with this name (accessed at PUT http://localhost:3000/api/bears/:bear_name)
-.put((req, res) => {
-    Bear.findOne({'name': req.params.bear_name},(err, bear) => {
-        if (err)
-            res.send(err);
-        bear.name = req.body.name;  // update the bears info
 
-    // save the bear
-        bear.save((err) => {
-            if (err)
-                res.send(err);
-            res.json({ message: 'Bear updated!' });
+//add and update bears ✓
+router.route('/bears/add')
+    .post((req,res, next) => {
+    // find & update existing item, or add new 
+    if (!req.body._id) { // insert new document
+        let bear = new Bear({name:req.body.name,color:req.body.color,type:req.body.type});
+        bear.save((err,newbear) => {
+            if (err) return next(err);
+            console.log(newbear)
+            res.json({updated: 0, _id: newbear._id});
         });
-    });
-})
+    } else { // update existing document
+        Bear.updateOne({ _id: req.body._id}, {name:req.body.name, color: req.body.color, type: req.body.type }, (err, result) => {
+            if (err) return next(err);
+            res.json({updated: result.nModified, _id: req.body._id});
+        });
+    }
+});
 
-// delete the bear with this name (accessed at DELETE http://localhost:3000/api/bears/:bear_name)
-.delete((req, res) => {
-    Bear.findOneAndRemove({'name': req.params.bear_name}, (err, bear) => {
-        console.log(bear)
-        if (err)
-            res.send(err);
-
-        res.json({ message: 'Successfully deleted' });
+// delete the bear with this id (accessed at DELETE http://localhost:3000/api/bears/delete/:bear_id) ✓
+router.route('/bears/delete/:bear_id')
+    .get((req, res, next) => {
+        Bear.remove({_id:req.params.bear_id }, (err, result) => {
+            if (err) return next(err);
+            res.json({message: 'Successful deleted.'});
     });
 });
 
